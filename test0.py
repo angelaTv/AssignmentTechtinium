@@ -1,3 +1,13 @@
+"""
+This Test1.py will work for only for units/capacity of 160 units-3200units perfectly.
+As of now this program wont work below 160 and above 3200
+Test cases i did
+    resourealloc(1150, 1)
+    resourealloc(1110, 12)
+    resourealloc(3200, 5)
+    resourealloc(160, 12)
+
+"""
 
 
 def resourealloc(num, hours):
@@ -29,19 +39,25 @@ def resourealloc(num, hours):
         machine[tname] = nunits_part1
         reminder_part1 = num % t
         # the remaining
-        n = len(NewYork)
-        sumo = reminder_part1
-        cnt = 0
-        for i in range(0, n):
-            for j in range(i + 1, n):
-                if NewYork[list(NewYork.keys())[i]][0] + NewYork[list(NewYork.keys())[j]][0] == sumo:
-                    cnt += 1
-                    t2name = list(NewYork.keys())[i]
-                    t2cost = NewYork[list(NewYork.keys())[i]][1]
-                    t3name = list(NewYork.keys())[j]
-                    t3cost = NewYork[list(NewYork.keys())[j]][1]
-        machine[t2name] = 1
-        machine[t3name] = 1
+        if reminder_part1 != 0:
+            n = len(NewYork)
+            sumo = reminder_part1
+            cnt = 0
+            for i in range(0, n):
+                for j in range(i + 1, n):
+                    if NewYork[list(NewYork.keys())[i]][0] + NewYork[list(NewYork.keys())[j]][0] == sumo:
+                        cnt += 1
+                        t2name = list(NewYork.keys())[i]
+                        t2cost = NewYork[list(NewYork.keys())[i]][1]
+                        t3name = list(NewYork.keys())[j]
+                        t3cost = NewYork[list(NewYork.keys())[j]][1]
+                    machine[t2name] = 1
+                    machine[t3name] = 1
+            else:
+                t2cost = 1
+                t3name = list(NewYork.keys())[j]
+                t3cost = 1
+
         # To find cost
         totalcost = (nunits_part1 * tcost * hours) + (t2cost * hours) + (t3cost * hours)
         outputNy = {}
@@ -49,11 +65,15 @@ def resourealloc(num, hours):
         outputNy['totalcost'] = totalcost
         outputNy['machine'] = machine
         return outputNy
+
     output = [costeffec(NewYork, "Newyork"), costeffec(India, "India"), costeffec(China, "China")]
     result = {}
     result['output'] = output
     print(result)
 
 
+# calling the function
 resourealloc(1150, 1)
-
+# Expected output {'output': [{'region': 'Newyork', 'totalcost': 9802, 'machine': {'8XLarge': 7, 'Large': 1,
+# 'XLarge': 1}}, {'region': 'India', 'totalcost': 9102, 'machine': {'8XLarge': 7, 'Large': 1, '10XLarge': 1}},
+# {'region': 'China', 'totalcost': 8262, 'machine': {'8XLarge': 7, 'Large': 1, 'XLarge': 1}}]}
